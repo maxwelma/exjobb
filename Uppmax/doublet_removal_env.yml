@@ -1,0 +1,4 @@
+name: doublet_removal_env
+dependencies:
+  - python
+  - numpy
