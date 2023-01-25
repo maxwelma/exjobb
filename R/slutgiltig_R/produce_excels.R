@@ -1,6 +1,9 @@
 #Recluster and produce excel files for different subsets and resolutions
 source("functions.R")
 source("markers.R")
+library(xlsx)
+
+#WITH PLOTS
 #all
 all.markers.both <- Markers2xlsx(combined.sct, c(0:30), "reclustering_GO_new_res/whole/08/", "whole_go_08", 0.8) #- samma
 all.markers.both <- Markers2xlsx(combined.sct, c(0:30), "reclustering_GO_new_res/whole/02/", "whole_go_02", 0.2) #- samma
@@ -40,3 +43,49 @@ Mono.markers.both <- Markers2xlsx(combined.sct, c(5,6), "reclustering_GO_new_res
 
 #likely thrombocytes
 clust9.markers.both <- Markers2xlsx(combined.sct, c(9), "reclustering_GO_new_res/clust9/", "clust9_GO_0.3",0.3)
+
+
+
+#WITHOUT PLOTS
+#all
+all.markers.both <- Markers2xlsx(combined.sct, c(0:30), "outfiles/whole_dataset/08/", "whole_data_08", 0.8,print_plot=F )
+
+#cluster 28
+Markers2xlsx(combined.sct, c(28), "outfiles/cluster_28/08/", "clust28_08", 0.8, print_plot=F)
+Markers2xlsx(combined.sct, c(28), "outfiles/cluster_28/03/", "clust28_03", 0.3, print_plot=F)
+
+#active cells
+Markers2xlsx(combined.sct, c(22), "outfiles/cluster_22/08/", "clust22_08", 0.8, print_plot=F)
+Markers2xlsx(combined.sct, c(22), "outfiles/cluster_22/03/", "clust22_03", 0.3, print_plot=F)
+
+#cluster 17
+Markers2xlsx(combined.sct, c(17), "outfiles/cluster_17/08/", "clust17_08", 0.8,print_plot=F)
+
+#likely T-cells
+Markers2xlsx(combined.sct, c(0,1,23,25), "outfiles/gd_Tcells/08/", "gd_Tcells_08",0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(0,1,23,25), "outfiles/gd_Tcells/03/", "gd_Tcells_08",0.3,print_plot=F)
+
+Markers2xlsx(combined.sct, c(3,8,11,12,13,14,15,16,24,30), "outfiles/ab_Tcells/08/", "ab_Tcells_08", 0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(3,8,11,12,13,14,15,16,24,30), "outfiles/ab_Tcells/03/", "ab_Tcells_03", 0.3,print_plot=F)
+
+Markers2xlsx(combined.sct, c(7,29),  "outfiles/clusters_7_9/08/", "clust7_9_08", 0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(7,29),  "outfiles/clusters_7_9/03/", "clust7_9_03", 0.3,print_plot=F)
+
+Markers2xlsx(combined.sct, c(4), "outfiles/cluster_4/08/", "clust4_08", 0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(4), "outfiles/cluster_4/03/", "clust4_03", 0.3,print_plot=F)
+
+
+#likely b cells
+Markers2xlsx(combined.sct, c(2,10,18,20,21,26), "outfiles/B_cells/08/", "bcells_08", 0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(2,10,18,20,21,26), "outfiles/B_cells/03/", "bcells_03", 0.3,print_plot=F)
+
+Markers2xlsx(combined.sct, c(19),  "outfiles/cluster_19/08/", "clust_19_08", 0.8,print_plot=F)
+
+#likely monocytes
+Markers2xlsx(combined.sct, c(5,6), "outfiles/monocytes/08/", "monocytes_08",0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(5,6), "outfiles/monocytes/04/", "monocytes_04",0.4,print_plot=F)
+
+#likely thrombocytes
+Markers2xlsx(combined.sct, c(9), "outfiles/cluster_9/", "clust_9_08",0.8,print_plot=F)
+Markers2xlsx(combined.sct, c(9), "outfiles/cluster_9/", "clust_9_03",0.3,print_plot=F)
+

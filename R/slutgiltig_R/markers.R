@@ -172,7 +172,7 @@ mono.figure.221230 <- c("CD74",
                         "IRF8",
                         "CADM1")
 #markers for b-cell figure for report
-b.cell.fig.220127 <- c("EBF1",
+b.cell.fig.221207 <- c("EBF1",
                        "PAX5",
                        "IGLL1",
                        "CXCR4",
@@ -196,6 +196,53 @@ b.cell.fig.220127 <- c("EBF1",
                        "PRDM1", #blimp1
                        "TNFRSF13C" #BAFFR
 )
+
+b.cell.figure.230112 <- c("LOC396098",
+                          "LOC121108878",
+                          "CD79B",
+                          "IGLL1",
+                          "VH26L1",
+                          "EVI2A",
+                          "VAV2",
+                          "LYN",
+                          "PAX5",
+                          "EBF1",
+                          "TCF4",
+                          "SOX5",
+                          "BLB1",
+                          "BLB2",
+                          "CD74",
+                          "IRAG2",
+                          "MARCH8",
+                          "BHLHE41",
+                          "PTPRJ",
+                          "BANK1",
+                          "MAML3",
+                          "CXCR4",
+                          "TNFSF13B",
+                          "TNFRSF13C",
+                          "HMGB1",
+                          "ATP11A",
+                          "FNIP1",
+                          "IL5RA",
+                          "TLR1A",
+                          "CD83",
+                          "LOC395551",
+                          "OIT3",
+                          "MYLIP",
+                          "WWOX",
+                          "FHIT")
+
+prol <- c("IGLL1",
+          "VH26L1",
+          "JCHAIN",
+          "GNLY",
+          "J6367-mgp01",
+          "PPIA",
+          "LOC100859737",
+          "HMGB1",
+          "GZMA",
+          "LOC427882")
 
 #markers for general figure report
 stora.fig <- c("LOC396098","SOX5","PAX5","CD3E","CD3D","TARP","CD4","CD8A","CD8BP","MMR1L4","ITGA2B","ITGB3","HBBA")

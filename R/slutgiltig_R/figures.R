@@ -1,4 +1,6 @@
 #create figures
+library(ggplot2)
+source("markers.R")
 
 #stor figur
 colours <- c(rep("#de8a00ff",3),rep("#00bf8aff",6),rep("#00b3f0ff",1),rep("#ff63b0ff",2),rep("#c77affff",1))
@@ -73,6 +75,8 @@ DotPlot(combined.sct.mono.re,features = rev(mono.figure.221230))+coord_flip()+
 
 #B cell figure
 colours <- c(rep("black",10),rep("orange",5),rep("green",2),rep("purple",3))
+colours <- c(rep("black",1),rep("blue",7),rep("green",4),rep("black",5),rep("red",11),rep("black",3),rep("purple",4))
+
 
 b.clusts <- c(2,10,17,18,19,20,21,26)
 combined.sct.b <- subset(combined.sct,idents = b.clusts)
@@ -83,5 +87,10 @@ bcellfeats <- c("EBF1", "PAX5", "IGLL1", "CXCR4","TNFSF13B","HMGB1", "LAMP3", "C
 DimPlot(combined.sct.b,label=T, label.box=T, repel=T)+NoLegend()+ggtitle("Putative B-cells")+
   theme(plot.title = element_text(hjust = 0.5))
 
-DotPlot(combined.sct.b,features = rev( b.cell.fig.220127))+coord_flip()+
+DotPlot(combined.sct.b,features = rev( b.cell.figure.230112))+coord_flip()+
   theme(axis.text.y = element_text(colour=rev(colours)))
+
+#cluster 22
+DotPlot(combined.sct,features = rev(prol),scale=F)+coord_flip()+
+  theme(axis.text.y = element_text(colour=rev(colours)))
+

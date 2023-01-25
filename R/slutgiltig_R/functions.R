@@ -376,8 +376,88 @@ PrintMarkers <- function(orig.object,object,markers, filename,featuresdotplot){
   }
 }
 
+
+
+#print the resulting markers to 
+PrintMarkersRaw <- function(orig.object,object,markers, filename){
+  if(file.exists(filename)==T){
+    ## delete the file if already existing
+    unlink(filename)
+    print("File is being overwriten")
+  }
+  
+  
+  wb <- createWorkbook()
+
+  #check if the markers df has a "cluster" column
+  if(length(markers$cluster)>0){
+    #loop over all clusters in subset
+    for (i in unique(markers$cluster)){
+      #subset markers from cluster
+      markers_sub <- subset(markers,cluster==i)
+      markers_sub<- markers_sub[order(-markers_sub$avg_log2FC),]
+      
+      #check if markers df has a "gene" column, if not use rownames 
+      #(if markers has several clusters it will name the ronames gene.1, gene.2, etc. Then the gene column is needed)
+      
+      if ("gene"%in%names(markers_sub)){
+        genes <- head(subset(markers_sub,avg_log2FC >0.25)$gene,n=100)
+      }else{
+        genes <- head(rownames(subset(markers_sub,avg_log2FC >0.25)),n=100)
+      }
+      
+      #Uncomment below to add gene descriptions from ncbi
+      #descs <- getDescritions(genes, length(rownames(markers_sub)))
+      #markers_sub["description"] <- descs
+      
+      #creare
+      sheet  <- createSheet(wb, sheetName=as.character(paste0("Cluster",i)))
+      addDataFrame(markers_sub,sheet=sheet,colStyle= dfColIndex)
+      
+      #add go terms 
+      sheet_go  <- createSheet(wb, sheetName=as.character(paste0("GO_cluster",i)))
+      gostres <- gost(query =genes, organism = "ggallus") 
+      if (length(gostres)==0){
+        res <- data.frame(0) 
+      }else{
+        res <- gostres$result[order(gostres$result$p_value),]
+      }
+      addDataFrame(res,sheet=sheet_go)
+      
+      saveWorkbook(wb, paste0(filename,".xlsx"))
+    }
+  }else{
+    markers_sub<-markers
+    markers_sub<- markers_sub[order(-markers_sub$avg_log2FC),]
+    
+    if ("gene"%in%names(markers_sub)){
+      genes <- head(subset(markers_sub,avg_log2FC >0.25)$gene,n=100)
+    }else{
+      genes <- head(rownames(subset(markers_sub,avg_log2FC >0.5)),n=100)
+    }
+    
+    sheet  <- createSheet(wb, sheetName=as.character("All"))
+    addDataFrame(markers_sub,sheet=sheet,colStyle= dfColIndex)
+    
+    #add kegg go terms
+    sheet_go  <- createSheet(wb, sheetName=as.character("GO_All"))
+    gostres <- gost(query =genes, organism = "ggallus") 
+    if (length(gostres)==0){
+      res <- data.frame(0) 
+    }else{
+      res <- gostres$result[order(gostres$result$p_value),]
+    }
+    addDataFrame(res,sheet=sheet_go)
+    
+    saveWorkbook(wb, paste0(filename,".xlsx"))
+  }
+}
+
 #produce and save markers for object subset
-Markers2xlsx <- function(object, clusters, directory, filename, resolution_clusts,featuresdotplot){
+Markers2xlsx <- function(object, clusters, directory, filename, resolution_clusts,featuresdotplot,print_plot){
+  if (missing(print_plot)){
+    print_plot = T
+  }
   #markers between clusters within subset 
   clust <- ReclusterSCT(object = object , 0.9, clusters,resolution_clusts)
   clust<- PrepSCTFindMarkers(clust)
@@ -388,8 +468,11 @@ Markers2xlsx <- function(object, clusters, directory, filename, resolution_clust
   }
   
   file <- paste0(directory,paste0(filename,"_1_in"))
-  PrintMarkers(orig.object=object,object=clust,markers = cluster.markers.in, filename=file,featuresdotplot=featuresdotplot)
-  
+  if (print_plot == T){
+    PrintMarkers(orig.object=object,object=clust,markers = cluster.markers.in, filename=file,featuresdotplot=featuresdotplot)
+  }else{
+    PrintMarkersRaw(orig.object=object,object=clust,markers = cluster.markers.in, filename=file)
+  }
   #markers between clusters in subset and all other cells
   #initiate empty df
   cluster.markers.out<-setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("p_val","avg_log2FC","pct.1","pct.2","p_val_adj"))
@@ -403,7 +486,11 @@ Markers2xlsx <- function(object, clusters, directory, filename, resolution_clust
   }
   
   file <- paste0(directory,paste0(filename,"_2_out"))
-  PrintMarkers(orig.object=object, object=clust,markers = cluster.markers.out, filename=file,featuresdotplot=featuresdotplot)
+  if (print_plot == T){
+    PrintMarkers(orig.object=object, object=clust,markers = cluster.markers.out, filename=file,featuresdotplot=featuresdotplot)
+  }else{
+    PrintMarkersRaw(orig.object=object, object=clust,markers = cluster.markers.out, filename=file)
+  }
   return(list(cluster.markers.in,cluster.markers.out))
 }
 
